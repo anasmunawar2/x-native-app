@@ -1,8 +1,12 @@
 import axios, { AxiosInstance } from "axios";
 import { useAuth } from "@clerk/clerk-expo";
 
-const API_BASE_URL = "https://x-native-app.vercel.app/api";
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || "https://x-native-app.vercel.app/api";
+// ! 🔥 localhost api would not work on your actual physical device
+// const API_BASE_URL = "http://localhost:5001/api";
 
+// this will basically create an authenticated api, pass the token into our headers
 export const createApiClient = (
   getToken: () => Promise<string | null>
 ): AxiosInstance => {
@@ -13,7 +17,6 @@ export const createApiClient = (
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   });
 
@@ -22,7 +25,6 @@ export const createApiClient = (
 
 export const useApiClient = (): AxiosInstance => {
   const { getToken } = useAuth();
-
   return createApiClient(getToken);
 };
 
