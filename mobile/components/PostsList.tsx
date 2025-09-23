@@ -3,7 +3,7 @@ import React from "react";
 import { Text, View } from "react-native";
 
 const PostsList = () => {
-  const { currentUser a} = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   return (
     <View>
       <Text>PostsList</Text>
