@@ -1,10 +1,13 @@
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { usePosts } from "@/hooks/usePosts";
-import React from "react";
+import { Post } from "@/types";
+import React, { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import PostCard from "./PostCard";
 
 const PostsList = () => {
   const { currentUser } = useCurrentUser();
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   const {
     posts,
@@ -48,9 +51,19 @@ const PostsList = () => {
   }
 
   return (
-    <View>
-      <Text>PostsList</Text>
-    </View>
+    <>
+      {posts.map((post: Post) => (
+        <PostCard
+          key={post._id}
+          post={post}
+          onLike={toggleLike}
+          onDelete={deletePost}
+          onComment={(post: Post) => setSelectedPostId(post._id)}
+          currentUser={currentUser}
+          isLiked={checkIsLiked(post.likes, currentUser)}
+        />
+      ))}
+    </>
   );
 };
 
