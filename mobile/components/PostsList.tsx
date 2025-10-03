@@ -4,6 +4,7 @@ import { Post } from "@/types";
 import React, { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import PostCard from "./PostCard";
+import CommentModal from "./CommentModal";
 
 const PostsList = () => {
   const { currentUser } = useCurrentUser();
@@ -18,6 +19,10 @@ const PostsList = () => {
     deletePost,
     checkIsLiked,
   } = usePosts();
+
+  const selectedPost = selectedPostId
+    ? posts.find((p: Post) => p._id === selectedPostId)
+    : null;
 
   if (isLoading) {
     return (
@@ -63,6 +68,11 @@ const PostsList = () => {
           isLiked={checkIsLiked(post.likes, currentUser)}
         />
       ))}
+
+      <CommentModal
+        selectedPost={selectedPost}
+        onClose={() => setSelectedPostId(null)}
+      />
     </>
   );
 };
